@@ -1,6 +1,7 @@
 # TopoFormer
 
-**Title** - TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions
+**Title** - TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions.
+
 **Authors** - Dong Chen, Jian Liu, and Guo-wei Wei
 
 ---
@@ -80,7 +81,7 @@ A brief introduction about the benchmarks.
 |             |                 |                              | 285 <br>(v2016 core set)     |
 
 - RowData: the protein-ligand complex structures. From PDBbind
-- TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 $\AA$; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 $\AA$; 
+- TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 \AA; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 \AA; 
 - Label: the .csv file, which contains the protein ID and corresponding binding affinity.
 
 ---

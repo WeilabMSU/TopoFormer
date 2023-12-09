@@ -1,7 +1,7 @@
 # TopoFormer
 
-**Title** - TopoFormer: Topological Transformer for Enhanced Protein-Ligand Interaction Prediction
-**Authors** - Dong Chen, Guo-wei Wei
+**Title** - TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions
+**Authors** - Dong Chen, Jian Liu, and Guo-wei Wei
 
 ---
 
@@ -27,17 +27,19 @@
 
 ## Introduction
 
-Topological transformer, namely TopoFormer, an innovative model anchored in the persistent topological Laplacian, which stands as a beacon within transformer-based architectures. By translating protein-ligand complexes into sequences of topological objects, TopoFormer harnesses a vast reservoir of unlabeled data before refining its capabilities on labeled datasets. This logical progression ensures exemplary **scoring** accuracy, further evidenced by its superior performance in **ranking**, **docking**, and **screening** tasks via a number of benchmark datasets.
+Pre-trained deep Transformers have had tremendous success in a wide variety of disciplines. However, in computational biology, essentially all Transformers  are built upon the biological sequences, which ignores vital stereochemical information  and may result in crucial errors in downstream predictions. On the other hand, three-dimensional (3D) molecular structures are incompatible with the sequential architecture of Transformer and natural language processing (NLP) models in general. This work addresses this foundational challenge by a topological Transformer (TopoFormer). TopoFormer is built by integrating NLP and a multiscale topology techniques, the persistent topological hyperdigraph Laplacian (PTHL), which systematically converts intricate 3D protein-ligand complexes at various spatial scales into a NLP-admissible sequence of topological invariants and homotopic shapes. Element-specific PTHLs are further developed to embed crucial physical, chemical, and biological interactions into topological sequences. TopoFormer surges ahead of conventional algorithms and recent deep learning variants and gives rise to exemplary scoring accuracy and superior performance in ranking, docking, and screening tasks in a number of benchmark datasets. The proposed topological sequences can be extracted from all kinds of structural data in data science to facilitate various NLP models,  heralding a new era in AI-driven discovery.
+
+> **Keywords**: Drug design, Topological sequences, Topological Transformer, Multiscale Topology, Hyperdigraph Laplacian.
 
 ---
 
 ## Model Architecture
 
-The overall architecture of the model is shown in below.
+Schematic illustration of the overall TopoFormer model is shown in below.
 
 ![Model Architecture](Figure_overall_model.png)
 
-Further explain the details in the [paper](https://pubs.acs.org/doi/full/10.1021/acs.jpclett.1c03058), providing context and additional information about the architecture and its components.
+Further explain the details in the [paper](https://github.com/WeilabMSU/TopoFormer), providing context and additional information about the architecture and its components.
 
 ---
 
@@ -78,7 +80,7 @@ A brief introduction about the benchmarks.
 |             |                 |                              | 285 <br>(v2016 core set)     |
 
 - RowData: the protein-ligand complex structures. From PDBbind
-- TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 \AA; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 \AA; 
+- TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 $\AA$; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 $\AA$; 
 - Label: the .csv file, which contains the protein ID and corresponding binding affinity.
 
 ---
@@ -137,16 +139,16 @@ CUDA_VISIBLE_DEVICES=1 python $fintuning_python_script --hidden_dropout_prob 0.1
 
 | Finetuned for scoring                                                | Training Set                  | Test Set| PCC | RMSE (kcal/mol) |
 |-------------------------------------------------                     |-------------                  |---------|-    |-                |
-| CASF-2007 [result](./Results)      | 1105                          | 195     |0.836|1.815|
-| CASF-2007 small [result](./Results)| 1105                          | 195     |0.838|1.807|
-| CASF-2013 [result](./Results)      | 2764                          | 195     |0.817|1.858|
-| CASF-2016 [result](./Results)      | 3772                          | 285     |0.865|1.561|
+| CASF-2007 [result](./Results)      | 1105                          | 195     |0.837|1.807|
+| CASF-2007 small [result](./Results)| 1105                          | 195     |0.839|1.807|
+| CASF-2013 [result](./Results)      | 2764                          | 195     |0.816|1.859|
+| CASF-2016 [result](./Results)      | 3772                          | 285     |0.864|1.568|
 | PDB v2016 [result](./Results)      | 3767                          | 290     |0.866|1.561|
-| PDB v2020 [result](./Results)      | 18904 <br> (exclude core sets)|195<br>CASF-2007 core set|0.857|1.737|
-|                                    |                               |195<br>CASF-2013 core set|0.842|1.761|
-|                                    |                               |285<br>CASF-2016 core set|0.876|1.526|
+| PDB v2020 [result](./Results)      | 18904 <br> (exclude core sets)|195<br>CASF-2007 core set|0.853|1.295|
+|                                    |                               |195<br>CASF-2013 core set|0.832|1.301|
+|                                    |                               |285<br>CASF-2016 core set|0.881|1.095|
 
-Note, there are 20 TopoFormers are trained for each dataset with distinct random seeds to address initialization-related errors. And 20 gradient boosting regressor tree (GBRT) models are subsequently trained one these sequence-based features, which predictions can be found in the [results](./Results) folder. Then, 10 models were randomly selected from TopoFormer and GBDT models, respectively, to obtain their respective consensus results, and finally the average of the two types of consensus predictions was used as the final prediction result. The performance shown in the table is the average result of this process performed 400 times.
+Note, there are 20 TopoFormers are trained for each dataset with distinct random seeds to address initialization-related errors. And 20 gradient boosting regressor tree (GBRT) models are subsequently trained one these sequence-based features, which predictions can be found in the [results](./Results) folder. Then, 10 models were randomly selected from TopoFormer and GBDT models, respectively, the consensus predictions of these models was used as the final prediction result. The performance shown in the table is the average result of this process performed 400 times.
 
 - Docking
 

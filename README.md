@@ -1,5 +1,12 @@
 # TopoFormer
 
+<div align='center'>
+ 
+<!-- [![preprint](https://img.shields.io/static/v1?label=arXiv&message=2310.12508&color=B31B1B)](https://www.google.com/) -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
 **Title** - TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions.
 
 **Authors** - Dong Chen, Jian Liu, and Guo-wei Wei

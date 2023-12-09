@@ -178,7 +178,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Citation
 
 If you use this code or the pre-trained models in your work, please cite our work. 
-- Chen, Dong, Guo-Wei Wei. "TopoFormer: Topological Transformer for Enhanced Protein-Ligand Interaction Prediction."
+- Chen, Dong, Jian Liu, and Guo-Wei Wei. "TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions."
 
 ---
 

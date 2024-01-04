@@ -73,7 +73,6 @@ def get_data_from_ligand_ensemble_PDB(
     return np.array(selected_ele), np.array(selected_xyz) 
 
 
-
 def get_data_from_ligand_PDB(
         protein_pdb_file,  # ligand form the complex PDB file
         consider_ele=['H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I']
@@ -166,33 +165,40 @@ def generate_distance_matrix(protein_ele, protein_xyz, ligand_ele, ligand_xyz, c
 
 
 def generate_lap_features(
-    protein_feature_folder,
-    protein_pdb,
-    ligand_mol2,
+    output_feature_folder,
+    output_feature_name,
+    protein_file,
+    ligand_file,
     consider_field,
-    ph_cutoff,
-    ph_startdis,
+    dis_cutoff,
+    dis_start,
     ele_scheme,
-    ligand_type,
+    ligand_file_type,
 ):
     # all protein and all ligand
     raw_protein_ele, raw_protein_xyz = get_data_from_protein_PDB(
-        protein_pdb_file=protein_pdb,
+        protein_pdb_file=protein_file,
         consider_ele=['C', 'N', 'O', 'S'],
     )
-    if ligand_type == 'pdb':
+    if ligand_file_type == 'pdb':
         raw_ligand_ele, raw_ligand_xyz = get_data_from_ligand_PDB(
-            ligand_mol2,
+            ligand_file,
             ['H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I'],
         )
-    elif ligand_type == 'sdf':
+    elif ligand_file_type == 'sdf':
         raw_ligand_ele, raw_ligand_xyz = get_data_from_ligand_sdf(
-            ligand_mol2,
+            ligand_file,
             ['H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I'],
         )
-    elif ligand_type == 'ensamble_pdb':
+    elif ligand_file_type == 'mol2':
+        raw_ligand_ele, raw_ligand_xyz = get_data_from_ligand_mol2(
+            ligand_file,
+            ['H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I'],
+        )
+
+    elif ligand_file_type == 'ensamble_pdb':
         raw_ligand_ele, raw_ligand_xyz = get_data_from_ligand_ensemble_PDB(
-            ligand_mol2,
+            ligand_file,
             ['H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl', 'Br', 'I'],
         )
 
@@ -211,11 +217,13 @@ def generate_lap_features(
             protein_indices.append(i_portein)
     considered_protein_ele = raw_protein_ele[protein_indices]
     considered_protein_xyz = raw_protein_xyz[protein_indices]
-    print(f'protein size: {len(considered_protein_ele)}')
+    print(f'Number of protein atoms: {len(considered_protein_ele)}')
+    print(f'Number of protein atoms: {len(raw_ligand_ele)}')
 
     #
     protein_ele_sets, ligand_ele_sets = selected_target_combination(scheme_name=ele_scheme)
     feature_array = np.zeros([6, 100, 143])
+    print(f'feature shape: [#statisc spectral, #filtration parameters, #element-specific combinations] = [6, 100, 143]')
     element_combin_count = 0
     for i, protein_ele in enumerate(protein_ele_sets):
         selected_protein_indices = [ele in protein_ele for ele in considered_protein_ele]
@@ -227,7 +235,7 @@ def generate_lap_features(
             selected_ligand_xyz = raw_ligand_xyz[selected_ligand_indices]
 
             # make and save distance matrix file
-            distance_matrix = generate_distance_matrix(selected_protein_ele, selected_protein_xyz, selected_ligand_ele, selected_ligand_xyz, ph_cutoff)
+            distance_matrix = generate_distance_matrix(selected_protein_ele, selected_protein_xyz, selected_ligand_ele, selected_ligand_xyz, dis_cutoff)
             
             # running laplacian program
             protein_len = len(selected_protein_ele)
@@ -238,7 +246,7 @@ def generate_lap_features(
                     input_data=distance_matrix,
                     is_distance_matrix=True,
                     max_dim=0,
-                    filtration=np.round(np.arange(ph_startdis, ph_cutoff, 0.1), 2),
+                    filtration=np.round(np.arange(dis_start, dis_cutoff, 0.1), 2),
                     print_by_step=True,
                 )
                 for filtration_n, data_l in enumerate(all_laplacian_features):
@@ -255,23 +263,35 @@ def generate_lap_features(
             element_combin_count += 1
     
     # save
-    protein_name_temp = os.path.split(protein_pdb)[-1].split('.pdb')[0]
-    protein_name = protein_name_temp.split('_protein')[0] if '_protein' in protein_name_temp else protein_name_temp
-    np.save(os.path.join(protein_feature_folder, f'{protein_name}.npy'), feature_array, allow_pickle=True)
+    if output_feature_name is None:
+        protein_name_temp = os.path.split(protein_file)[-1].split('.pdb')[0]
+        protein_name = protein_name_temp.split('_protein')[0] if '_protein' in protein_name_temp else protein_name_temp
+        output_feature_name = protein_name
+    np.save(os.path.join(output_feature_folder, f'{output_feature_name}.npy'), feature_array, allow_pickle=True)
 
     return None
 
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description="generate topological features")
-    parser.add_argument('--protein_feature_folder', default='./dd', type=str)
-    parser.add_argument('--protein_pdb', default='ele_scheme_1-protein_only_ph_vr-10.npy', type=str)
-    parser.add_argument('--ligand_mol2', default='ele_scheme_1-protein_only_ph_vr-10.npy', type=str)
-    parser.add_argument('--consider_field', default=20, type=float)
-    parser.add_argument('--ph_cutoff', default=10, type=float)
-    parser.add_argument('--ph_startdis', default=0, type=float)
-    parser.add_argument('--ele_scheme', default='ele_scheme_1', type=str)
-    parser.add_argument('--ligand_file_type', default='pdb', type=str, help='ensamble_pdb for mutant pdb')
+    parser.add_argument('--output_feature_folder', default='./', type=str,
+                        help='The folder path for the output topological feature')
+    parser.add_argument('--output_feature_name', default=None, type=str,
+                        help='Specify the output feature name, the feature will be saved as .npy format, default: None')
+    parser.add_argument('--protein_file', default='protein.pdb', type=str,
+                        help='The absolute path of the protein file (PDB format only)')
+    parser.add_argument('--ligand_file', default='ligand.mol2', type=str,
+                        help='The absolute path of ligand file, (support sdf, mol2, pdb formats, (default: mol2)). One may change the ligand_file_type to specify the format')
+    parser.add_argument('--ligand_file_type', default='mol2', type=str,
+                        help='Support [mol2, pdb, and ensamble_pdb, sdf] formats, for ensamble_pdb, the user needs to change the ligand name in the `get_data_from_ligand_ensemble_PDB` function')
+    parser.add_argument('--consider_field', default=20, type=float,
+                        help='The radius of domine of protein atoms around the ligand, unit in angstrom')
+    parser.add_argument('--dis_cutoff', default=10, type=float,
+                        help='The cutoff distance of the filtration, unit in angstrom')
+    parser.add_argument('--dis_start', default=0, type=float,
+                        help='The begining distance of the filtration, unit in angstrom')
+    parser.add_argument('--ele_scheme', default='ele_scheme_1', type=str,
+                        help='The element-specifical combination method')
     args = parser.parse_args()
     return args
 
@@ -279,20 +299,21 @@ def parse_args(args):
 def main():
     args = parse_args(sys.argv[1:])
     generate_lap_features(
-        protein_feature_folder=args.protein_feature_folder,
-        protein_pdb=args.protein_pdb,
-        ligand_mol2=args.ligand_mol2,
+        output_feature_folder=args.output_feature_folder,
+        output_feature_name=args.output_feature_name,
+        protein_file=args.protein_file,
+        ligand_file=args.ligand_file,
         consider_field=args.consider_field,
-        ph_cutoff=args.ph_cutoff,
-        ph_startdis=args.ph_startdis,
+        dis_cutoff=args.dis_cutoff,
+        dis_start=args.dis_start,
         ele_scheme=args.ele_scheme,
-        ligand_type=args.ligand_file_type,
+        ligand_file_type=args.ligand_file_type,
     )
     return None
 
 
 if __name__ == "__main__":
     # test code
-    # python ./main_bindingdb_protein_ligand_complex_feature.py --protein_feature_folder /mnt/research/guowei-search.2/DongChen/BindingDB_docked_features_212_20 --protein_pdb /mnt/research/guowei-search.2/DongChen/BindingDB_docked_data/3C3U_C2U/3C3U.pdb --ligand_mol2 /mnt/research/guowei-search.2/DongChen/BindingDB_docked_data/3C3U_C2U/3C3U_ligand0.mol2 --ph_startdis 0 --ph_cutoff 10 --consider_field 20 
+    # usage: python main_potein_ligand_topo_embedding.py -h
+    # python main_potein_ligand_topo_embedding.py --output_feature_folder "../examples/output_topo_seq_feature_result" --protein_file "../examples/protein_ligand_complex/1a1e/1a1e_pocket.pdb" --ligand_file "../examples/protein_ligand_complex/1a1e/1a1e_ligand.mol2" --dis_start 0 --dis_cutoff 5 --consider_field 20 
     main()
-    # test_function()

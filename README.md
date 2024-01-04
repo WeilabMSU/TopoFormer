@@ -23,6 +23,7 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [Datasets](#datasets)
+  - [Preparing Topologial Sequence](#preparing-topologial-sequence)
   - [Fine-Tuning Procedure for Customized Data](#fine-tuning-procedure-for-customized-data)
   - [Results](#results)
       - [Pretrained models](#pretrained-models)
@@ -92,6 +93,16 @@ A brief introduction about the benchmarks.
 - Label: the .csv file, which contains the protein ID and corresponding binding affinity.
 
 ---
+## Preparing Topologial Sequence
+
+```shell
+# get the usage
+python ./code_pkg/main_potein_ligand_topo_embedding.py -h
+
+# examples
+python ./code_pkg/main_potein_ligand_topo_embedding.py --output_feature_folder "../examples/output_topo_seq_feature_result" --protein_file "../examples/protein_ligand_complex/1a1e/1a1e_pocket.pdb" --ligand_file "../examples/protein_ligand_complex/1a1e/1a1e_ligand.mol2" --dis_start 0 --dis_cutoff 5 --consider_field 20
+```
+
 
 ## Fine-Tuning Procedure for Customized Data
 

@@ -23,6 +23,7 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [Datasets](#datasets)
+  - [| Docking   | CASF-2007,2013| 3D poses. Download from https://weilab.math.msu.edu/AGL-Score |](#-docking----casf-20072013-3d-poses-download-from-httpsweilabmathmsueduagl-score-)
   - [Preparing Topologial Sequence](#preparing-topologial-sequence)
   - [Fine-Tuning Procedure for Customized Data](#fine-tuning-procedure-for-customized-data)
   - [Results](#results)
@@ -92,6 +93,11 @@ A brief introduction about the benchmarks.
 - TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 \AA; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 \AA; 
 - Label: the .csv file, which contains the protein ID and corresponding binding affinity.
 
+|    Task   | Datasets      | Description |
+|-----------|----------     |-------------|
+| Screening | LIT-PCBA      | 3D poses for all 15 targets. [Download (13GB)](https://weilab.math.msu.edu/Downloads/TopoFormer/LIT-PCBA_dock_pose.zip)|
+|           | PDBbind-v2013 | 3D poses. Download from https://weilab.math.msu.edu/AGL-Score|
+| Docking   | CASF-2007,2013| 3D poses. Download from https://weilab.math.msu.edu/AGL-Score |
 ---
 ## Preparing Topologial Sequence
 

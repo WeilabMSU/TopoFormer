@@ -3,7 +3,7 @@
 <div align='center'>
  
 <!-- [![preprint](https://img.shields.io/static/v1?label=arXiv&message=2310.12508&color=B31B1B)](https://www.google.com/) -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/DOI/YOUR_DOI.svg)](https://doi.org/10.5281/zenodo.10892800)
 
 </div>
 
@@ -79,7 +79,7 @@ A brief introduction about the benchmarks.
 
 | | Datasets                    | Training Set                 | Test Set                                             |
 |-|-----------------------------|------------------------------|------------------------------                        |
-|Pre-training | Combind PDBbind |19513 [RowData](www), [TopoFeature_small](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_small.zip), [TopoFeature_large](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_large.zip)  |                                          |
+|Pre-training | Combind PDBbind |19513 [RowData]([www](http://www.pdbbind.org.cn/)), [TopoFeature_small](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_small.npy), [TopoFeature_large](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_large.npy)  |                                          |
 |Finetuning   | CASF-2007       |1105  [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                        | 195 [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                         |
 |             | CASF-2013       |2764  [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                        | 195 [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                         |
 |             | CASF-2016       |3772  [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                        | 285 [Label](https://weilab.math.msu.edu/Downloads/TopoFormer/Benchmarks_labels.zip)                         |
@@ -202,7 +202,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Citation
 
 If you use this code or the pre-trained models in your work, please cite our work. 
-- Chen, Dong, Jian Liu, and Guo-Wei Wei. "TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions."
+- Chen, Dong, Jian Liu, and Guo-Wei Wei. "Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions."
 
 ---
 

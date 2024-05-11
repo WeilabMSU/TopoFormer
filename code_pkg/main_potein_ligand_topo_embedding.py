@@ -172,6 +172,7 @@ def generate_lap_features(
     consider_field,
     dis_cutoff,
     dis_start,
+    dis_step,
     ele_scheme,
     ligand_file_type,
 ):
@@ -222,7 +223,8 @@ def generate_lap_features(
 
     #
     protein_ele_sets, ligand_ele_sets = selected_target_combination(scheme_name=ele_scheme)
-    feature_array = np.zeros([6, 100, 143])
+    # feature_array = np.zeros([6, 100, 143])
+    feature_array = np.zeros([6, int((dis_cutoff-dis_start)/dis_step), 143])
     print(f'feature shape: [#statisc spectral, #filtration parameters, #element-specific combinations] = [6, 100, 143]')
     element_combin_count = 0
     for i, protein_ele in enumerate(protein_ele_sets):
@@ -246,7 +248,7 @@ def generate_lap_features(
                     input_data=distance_matrix,
                     is_distance_matrix=True,
                     max_dim=0,
-                    filtration=np.round(np.arange(dis_start, dis_cutoff, 0.1), 2),
+                    filtration=np.round(np.arange(dis_start, dis_cutoff, dis_step), 2),
                     print_by_step=True,
                 )
                 for filtration_n, data_l in enumerate(all_laplacian_features):
@@ -290,6 +292,7 @@ def parse_args(args):
                         help='The cutoff distance of the filtration, unit in angstrom')
     parser.add_argument('--dis_start', default=0, type=float,
                         help='The begining distance of the filtration, unit in angstrom')
+    parser.add_argument('--dis_step', default=0.1, type=float, help='filtration step')
     parser.add_argument('--ele_scheme', default='ele_scheme_1', type=str,
                         help='The element-specifical combination method')
     args = parser.parse_args()
@@ -306,6 +309,7 @@ def main():
         consider_field=args.consider_field,
         dis_cutoff=args.dis_cutoff,
         dis_start=args.dis_start,
+        dis_step=args.dis_step,
         ele_scheme=args.ele_scheme,
         ligand_file_type=args.ligand_file_type,
     )

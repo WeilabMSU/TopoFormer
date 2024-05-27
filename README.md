@@ -3,7 +3,7 @@
 <div align='center'>
  
 <!-- [![preprint](https://img.shields.io/static/v1?label=arXiv&message=2310.12508&color=B31B1B)](https://www.google.com/) -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/DOI/YOUR_DOI.svg)](https://doi.org/10.5281/zenodo.10892800)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10892800.svg)](https://doi.org/10.5281/zenodo.10892800)
 
 </div>
 
@@ -23,9 +23,10 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
   - [Datasets](#datasets)
-  - [| Docking   | CASF-2007,2013| 3D poses. Download from https://weilab.math.msu.edu/AGL-Score |](#-docking----casf-20072013-3d-poses-download-from-httpsweilabmathmsueduagl-score-)
-  - [Preparing Topologial Sequence](#preparing-topologial-sequence)
-  - [Fine-Tuning Procedure for Customized Data](#fine-tuning-procedure-for-customized-data)
+  - [Usage](#usage)
+    - [Preparing Topologial Sequence](#preparing-topologial-sequence)
+    - [Fine-Tuning Procedure for Customized Data](#fine-tuning-procedure-for-customized-data)
+    - [Extract the Latent Features](#extract-the-latent-features)
   - [Results](#results)
       - [Pretrained models](#pretrained-models)
       - [Finetuned models and performances](#finetuned-models-and-performances)
@@ -37,15 +38,12 @@
 
 ## Introduction
 
-Pre-trained deep Transformers have had tremendous success in a wide variety of disciplines. However, in computational biology, essentially all Transformers  are built upon the biological sequences, which ignores vital stereochemical information  and may result in crucial errors in downstream predictions. On the other hand, three-dimensional (3D) molecular structures are incompatible with the sequential architecture of Transformer and natural language processing (NLP) models in general. This work addresses this foundational challenge by a topological Transformer (TopoFormer). TopoFormer is built by integrating NLP and a multiscale topology techniques, the persistent topological hyperdigraph Laplacian (PTHL), which systematically converts intricate 3D protein-ligand complexes at various spatial scales into a NLP-admissible sequence of topological invariants and homotopic shapes. Element-specific PTHLs are further developed to embed crucial physical, chemical, and biological interactions into topological sequences. TopoFormer surges ahead of conventional algorithms and recent deep learning variants and gives rise to exemplary scoring accuracy and superior performance in ranking, docking, and screening tasks in a number of benchmark datasets. The proposed topological sequences can be extracted from all kinds of structural data in data science to facilitate various NLP models,  heralding a new era in AI-driven discovery.
-
+>Topological Transformer (TopoFormer) is built by integrating NLP and a multiscale topology techniques, the persistent topological hyperdigraph Laplacian (PTHL), which systematically converts intricate 3D protein-ligand complexes at various spatial scales into a NLP-admissible sequence of topological invariants and homotopic shapes. Element-specific PTHLs are further developed to embed crucial physical, chemical, and biological interactions into topological sequences. TopoFormer surges ahead of conventional algorithms and recent deep learning variants and gives rise to exemplary scoring accuracy and superior performance in ranking, docking, and screening tasks in a number of benchmark datasets. The proposed topological sequences can be extracted from all kinds of structural data in data science to facilitate various NLP models,  heralding a new era in AI-driven discovery.
 > **Keywords**: Drug design, Topological sequences, Topological Transformer, Multiscale Topology, Hyperdigraph Laplacian.
 
 ---
 
 ## Model Architecture
-
-Schematic illustration of the overall TopoFormer model is shown in below.
 
 ![Model Architecture](Figure_overall_model.png)
 
@@ -75,8 +73,6 @@ git clone https://github.com/WeilabMSU/TopoFormer.git
 
 ## Datasets
 
-A brief introduction about the benchmarks.
-
 | | Datasets                    | Training Set                 | Test Set                                             |
 |-|-----------------------------|------------------------------|------------------------------                        |
 |Pre-training | Combind PDBbind |19513 [RowData]([www](http://www.pdbbind.org.cn/)), [TopoFeature_small](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_small.npy), [TopoFeature_large](https://weilab.math.msu.edu/Downloads/TopoFormer/TopoFeature_large.npy)  |                                          |
@@ -91,26 +87,30 @@ A brief introduction about the benchmarks.
 
 - RowData: the protein-ligand complex structures. From PDBbind
 - TopoFeature: the topological embedded features for the protein-ligand complex. All features are saved in a dict, which `key` is the protein ID, and `value` is the topological embedded features for corresponding complex. The downloaded file is .zip file, which contains two file (1) `TopoFeature_large.npy`: topological embedded features with a filtration parameter ranging from 0 to 10 and incremented in steps of 0.1 \AA; (2) `TopoFeature_small.npy`: topological embedded features with a filtration parameter ranging from 2 to 12 and incremented in steps of 0.2 \AA; 
-- Label: the .csv file, which contains the protein ID and corresponding binding affinity.
+- Label: the .csv file, which contains the protein ID and corresponding binding affinity in the logKa unit.
 
 |    Task   | Datasets      | Description |
 |-----------|----------     |-------------|
 | Screening | LIT-PCBA      | 3D poses for all 15 targets. [Download (13GB)](https://weilab.math.msu.edu/Downloads/TopoFormer/LIT-PCBA_dock_pose.zip)|
 |           | PDBbind-v2013 | 3D poses. Download from https://weilab.math.msu.edu/AGL-Score|
-| Docking   | CASF-2007,2013| 3D poses. Download from https://weilab.math.msu.edu/AGL-Score |
+| Docking   | CASF-2007,2013| 3D poses. Download from https://weilab.math.msu.edu/AGL-Score|
+
 ---
-## Preparing Topologial Sequence
+
+## Usage
+
+### Preparing Topologial Sequence
 
 ```shell
 # get the usage
 python ./code_pkg/main_potein_ligand_topo_embedding.py -h
 
 # examples
-python ./code_pkg/main_potein_ligand_topo_embedding.py --output_feature_folder "../examples/output_topo_seq_feature_result" --protein_file "../examples/protein_ligand_complex/1a1e/1a1e_pocket.pdb" --ligand_file "../examples/protein_ligand_complex/1a1e/1a1e_ligand.mol2" --dis_start 0 --dis_cutoff 5 --consider_field 20
+python ./code_pkg/main_potein_ligand_topo_embedding.py --output_feature_folder "../examples/output_topo_seq_feature_result" --protein_file "../examples/protein_ligand_complex/1a1e/1a1e_pocket.pdb" --ligand_file "../examples/protein_ligand_complex/1a1e/1a1e_ligand.mol2" --dis_start 0 --dis_cutoff 5 --consider_field 20 --dis_step 0.1
 ```
 
 
-## Fine-Tuning Procedure for Customized Data
+### Fine-Tuning Procedure for Customized Data
 
 ```shell
 bs=32 # batch size
@@ -130,7 +130,6 @@ train_label_path=./CASF2016_refine_train_label.csv
 CUDA_VISIBLE_DEVICES=1 python $fintuning_python_script --hidden_dropout_prob 0.1 --attention_probs_dropout_prob 0.1 --num_train_epochs 100 --max_steps $ms --per_device_train_batch_size $bs --base_learning_rate $lr --output_dir $model_output_dir --model_name_or_path $pretrained_model_dir --scaler_path $scaler_path --validation_data $validation_data_path --train_data $train_data_path --validation_label $validation_label_path --train_label $train_label_path --pooler_type cls_token --random_seed 1234 --seed 1234;
 ```
 
-
 ```shell
 # script for no validation data and validation label
 # docking and screening
@@ -144,11 +143,24 @@ pretrained_model_dir=./pretrained_model
 scaler_path=./code_pkg/pretrain_data_standard_minmax_6channel_filtration50-12.sav
 train_data_path=./train_feat.npy
 train_label_path=./train_label.csv
+train_valdation_split=0.1  # 1/10 of training data will be used for validation
 
 # finetune for regression on one GPU
 CUDA_VISIBLE_DEVICES=1 python $fintuning_python_script --hidden_dropout_prob 0.1 --attention_probs_dropout_prob 0.1 --num_train_epochs 100 --max_steps $ms --per_device_train_batch_size $bs --base_learning_rate $lr --output_dir $model_output_dir --model_name_or_path $pretrained_model_dir --scaler_path /$scaler_path --train_data $train_data_path --train_label $train_label_path --validation_data None --validation_label None --train_val_split 0.1 --pooler_type cls_token --random_seed 1234 --seed 1234 --specify_loss_fct 'huber';
 ```
 
+### Extract the Latent Features
+
+```shell
+# replace with the proper pathes
+model_path=./pretrained_model
+feature_path=./topo_feature.npy  # it contains the topo_feature_array, rather than the dict
+scaler_path=./code_pkg/pretrain_data_standard_minmax_6channel_filtration50-12.sav
+save_feature_path=./latent_feature.npy
+latent_python_script=./code_pkg/final_generate_latent_features.py
+
+python $latent_python_script --model_path $model_path --scaler_path $scaler_path --feature_path $feature_path --save_feature_path $save_feature_path --latent_type encoder_pretrain
+```
 
 ---
 

@@ -33,6 +33,7 @@
   - [License](#license)
   - [Citation](#citation)
   - [Acknowledgements](#acknowledgements)
+  - [Contributors](#contributors)
 
 ---
 
@@ -221,3 +222,8 @@ If you use this code or the pre-trained models in your work, please cite our wor
 ## Acknowledgements
 
 This project has benefited from the use of the [Transformers](https://github.com/huggingface/transformers) library. Portions of the code in this project have been modified from the original code found in the Transformers repository.
+
+---
+
+## Contributors
+TopoFormer was developed by [Dong Chen](https://github.com/ChenDdon) and is maintained by [WeiLab at MSU Math](https://github.com/WeilabMSU)

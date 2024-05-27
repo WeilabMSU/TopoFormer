@@ -292,7 +292,7 @@ def parse_args(args):
                         help='The cutoff distance of the filtration, unit in angstrom')
     parser.add_argument('--dis_start', default=0, type=float,
                         help='The begining distance of the filtration, unit in angstrom')
-    parser.add_argument('--dis_step', default=0.1, type=float, help='filtration step')
+    parser.add_argument('--dis_step', default=0.1, type=float, help='filtration step, in Angstroms')
     parser.add_argument('--ele_scheme', default='ele_scheme_1', type=str,
                         help='The element-specifical combination method')
     args = parser.parse_args()

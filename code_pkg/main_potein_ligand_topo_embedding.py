@@ -269,7 +269,7 @@ def generate_lap_features(
         protein_name_temp = os.path.split(protein_file)[-1].split('.pdb')[0]
         protein_name = protein_name_temp.split('_protein')[0] if '_protein' in protein_name_temp else protein_name_temp
         output_feature_name = protein_name
-    np.save(os.path.join(output_feature_folder, f'{output_feature_name}.npy'), feature_array, allow_pickle=True)
+    np.save(os.path.join(output_feature_folder, f'{output_feature_name}.npy'), feature_array.astype(np.float32), allow_pickle=True)
 
     return None
 

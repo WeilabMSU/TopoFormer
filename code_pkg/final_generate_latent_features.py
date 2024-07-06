@@ -80,7 +80,7 @@ def main_latent_from_pretrained_model(args):
 
     # save feature
     save_feature_path = args.save_feature_path
-    np.save(save_feature_path, latent_features, allow_pickle=True)
+    np.save(save_feature_path, latent_features.astype(np.float32), allow_pickle=True)
 
     return None
 
@@ -123,7 +123,7 @@ def main_latent_from_finetuned_model(args):
 
     # save feature
     save_feature_path = args.save_feature_path
-    np.save(save_feature_path, latent_features, allow_pickle=True)
+    np.save(save_feature_path, latent_features.astype(np.float32), allow_pickle=True)
 
     return None
 
@@ -169,7 +169,7 @@ def main_latent_from_pretrained_decoder(args):
 
     # save feature
     save_feature_path = args.save_feature_path
-    np.save(save_feature_path, latent_features, allow_pickle=True)
+    np.save(save_feature_path, latent_features.astype(np.float32), allow_pickle=True)
 
     return None
 

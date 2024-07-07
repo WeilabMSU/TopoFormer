@@ -2,12 +2,12 @@
 
 <div align='center'>
  
-<!-- [![preprint](https://img.shields.io/static/v1?label=arXiv&message=2310.12508&color=B31B1B)](https://www.google.com/) -->
+[![ARTICLE](https://img.shields.io/static/v1?label=Article&message=2310.12508&color=B31B1B)](https://www.nature.com/articles/s42256-024-00855-1)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10892800.svg)](https://doi.org/10.5281/zenodo.10892800)
 
 </div>
 
-**Title** - TopoFormer: Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions.
+**Title** - Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions.
 
 **Authors** - Dong Chen, Jian Liu, and Guo-wei Wei
 
@@ -215,7 +215,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Citation
 
 If you use this code or the pre-trained models in your work, please cite our work. 
-- Chen, Dong, Jian Liu, and Guo-Wei Wei. "Multiscale Topology-enabled Structure-to-Sequence Transformer for Protein-Ligand Interaction Predictions."
+- Chen, Dong, Jian Liu, and Guo-Wei Wei. "Multiscale topology-enabled structure-to-sequence transformer for protein–ligand interaction predictions." Nature Machine Intelligence (2024): 1-12. [Read](https://www.nature.com/articles/s42256-024-00855-1) 
+
+```shell
+# BibTex
+@article{chen2024multiscale,
+  title={Multiscale topology-enabled structure-to-sequence transformer for protein--ligand interaction predictions},
+  author={Chen, Dong and Liu, Jian and Wei, Guo-Wei},
+  journal={Nature Machine Intelligence},
+  pages={1--12},
+  year={2024},
+  publisher={Nature Publishing Group UK London}
+}
+```
 
 ---
 

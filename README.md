@@ -188,6 +188,8 @@ python $latent_python_script --model_path $model_path --scaler_path $scaler_path
 
 Note, there are 20 TopoFormers are trained for each dataset with distinct random seeds to address initialization-related errors. And 20 gradient boosting regressor tree (GBRT) models are subsequently trained one these sequence-based features, which predictions can be found in the [results](./Results) folder. Then, 10 models were randomly selected from TopoFormer and GBDT models, respectively, the consensus predictions of these models was used as the final prediction result. The performance shown in the table is the average result of this process performed 400 times.
 
+Three example models fine-tuned for the CASF2016 scoring task are available for download. [download](https://weilab.math.msu.edu/Downloads/TopoFormer/finetuned_casf2016_3models.tar.gz)
+
 - Docking
 
 

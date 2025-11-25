@@ -223,9 +223,9 @@ def generate_lap_features(
 
     #
     protein_ele_sets, ligand_ele_sets = selected_target_combination(scheme_name=ele_scheme)
-    # feature_array = np.zeros([6, 100, 143])
+    # feature_array = np.zeros([6, 100, 143]), used in the TopoFormer work
     feature_array = np.zeros([6, int((dis_cutoff-dis_start)/dis_step), 143])
-    print(f'feature shape: [#statisc spectral, #filtration parameters, #element-specific combinations] = [6, 100, 143]')
+    print(f'feature shape: [#statisc spectral, #filtration parameters, #element-specific combinations] = ', np.shape(feature_array))
     element_combin_count = 0
     for i, protein_ele in enumerate(protein_ele_sets):
         selected_protein_indices = [ele in protein_ele for ele in considered_protein_ele]
